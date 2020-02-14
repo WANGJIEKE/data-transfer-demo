@@ -2,7 +2,6 @@ import csv
 import json
 import requests
 import sys
-import tqdm
 
 
 def profile_performance(data_count: int, api: str = 'http://127.0.0.1:9000/dataPoints') -> float:

@@ -16,6 +16,12 @@ button {
     font-size: 14px;
     padding: 5px;
     cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 5px;
+}
+
+label {
+    margin-left: 15px;
 }
 
 #mapid {

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -11,6 +12,16 @@ import play.libs.Json;
  * to the application's home page.
  */
 public class HomeController extends Controller {
+    private double[][] points = new double[1000000][2];
+
+    public HomeController() {
+        super();
+        Random random = new Random();
+        for (int i = 0; i < points.length; ++i) {
+            points[i][0] = random.nextDouble() - 0.8 + 51.505;
+            points[i][1] = random.nextDouble() - 0.8 - 0.09;
+        }
+    }
 
     /**
      * An action that renders an HTML page with a welcome message.
@@ -24,16 +35,9 @@ public class HomeController extends Controller {
 
 
     public Result dataPoints(int count) {
-        double[][] points = new double[count][2];
-        Random random = new Random();
-        for (int i = 0; i < points.length; ++i) {
-            points[i][0] = random.nextDouble() - 0.5 + 51.505;
-            points[i][1] = random.nextDouble() - 0.5 - 0.09;
-        }
-
         return ok(Json.toJson(new HashMap<String, Object>(){
             {
-                put("latlons", points);
+                put("latlons", Arrays.copyOfRange(points, 0, count));  // TODO: possible to avoid copy?
             }
         }));
     }

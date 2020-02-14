@@ -12,7 +12,7 @@ import play.libs.Json;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private double[][] points = new double[1000000][2];
+    private double[][] points = new double[Integer.MAX_VALUE][2];
 
     public HomeController() {
         super();

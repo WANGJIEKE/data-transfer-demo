@@ -23,7 +23,11 @@
     function getDataPoints() {
         fetch(`/dataPoints?count=${reqCount}`)
             .then(response => response.json(), reason => alert(reason))
-            .then(data => data['latlons'].map(latlon => L.circleMarker(latlon, { radius: 5 }).addTo(mymap)), reason => alert(reason));
+            .then(document.getElementById('display-result').checked ?
+                data => data['latlons'].map(latlon => L.circleMarker(latlon, { radius: 5 }).addTo(mymap)) :
+                null,
+                reason => alert(reason)
+            );
     }
 
     document.getElementById('get-data-button').addEventListener('click', getDataPoints);

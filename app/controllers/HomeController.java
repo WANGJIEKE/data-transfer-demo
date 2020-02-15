@@ -12,7 +12,7 @@ import play.libs.Json;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private double[][] points = new double[Integer.MAX_VALUE][2];
+    private double[][] points = new double[10000000][2];
 
     public HomeController() {
         super();
@@ -37,7 +37,7 @@ public class HomeController extends Controller {
     public Result dataPoints(int count) {
         return ok(Json.toJson(new HashMap<String, Object>(){
             {
-                put("latlons", Arrays.copyOfRange(points, 0, count));  // TODO: possible to avoid copy?
+                put("latlons", Arrays.copyOfRange(points, 0, count));
             }
         }));
     }

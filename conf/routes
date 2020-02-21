@@ -3,9 +3,9 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                            controllers.HomeController.index
+GET     /                            controllers.ReactController.index()
 GET     /dataPoints                  controllers.HomeController.dataPoints(count: Int)
+GET     /binDataPoints               controllers.HomeController.binDataPoints(count: Int)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)
-GET     /favicon.ico                 controllers.Assets.at(path="/public/images", file="favicon.png")
+GET     /*file                       controllers.ReactController.assetOrDefault(file)

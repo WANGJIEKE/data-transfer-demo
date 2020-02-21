@@ -55,3 +55,5 @@ server.pid
 .cache
 
 # End of https://www.gitignore.io/api/java,playframework
+/public/*
+.DS_Store

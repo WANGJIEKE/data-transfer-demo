@@ -1,5 +1,6 @@
 package controllers;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
@@ -12,33 +13,41 @@ import play.libs.Json;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private double[][] points = new double[10000000][2];
+    private double[][] points;
+    private byte[] binPoints;
+    private String pointsString;
+
+    private byte[] pointsToBytes(final double[][] points) {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * points.length * points[0].length);
+        for (final double[] point : points) {
+            byteBuffer.putDouble(point[0]);
+            byteBuffer.putDouble(point[1]);
+        }
+        return byteBuffer.array();
+    }
 
     public HomeController() {
         super();
         Random random = new Random();
+        points = new double[1000000][2];
         for (int i = 0; i < points.length; ++i) {
-            points[i][0] = random.nextDouble() - 0.8 + 51.505;
-            points[i][1] = random.nextDouble() - 0.8 - 0.09;
+            points[i][0] = random.nextDouble() * 0.08 - 122.123801;
+            points[i][1] = random.nextDouble() * 0.08 + 37.893394;
         }
+        binPoints = pointsToBytes(points);
+        pointsString = Arrays.deepToString(points);
     }
-
-    /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
-     */
-    public Result index() {
-        return ok(views.html.index.render());
-    }
-
 
     public Result dataPoints(int count) {
         return ok(Json.toJson(new HashMap<String, Object>(){
             {
-                put("latlons", Arrays.copyOfRange(points, 0, count));
+                put("latlons", Arrays.copyOfRange(points, 0, Math.min(count, points.length)));
             }
         }));
+    }
+
+    public Result binDataPoints(int count) {
+        System.out.println(pointsString);
+        return ok(Arrays.copyOfRange(binPoints, 0, Math.min(count, points.length) * Double.BYTES * 2));
     }
 }

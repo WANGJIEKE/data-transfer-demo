@@ -15,7 +15,6 @@ import play.libs.Json;
 public class HomeController extends Controller {
     private double[][] points;
     private byte[] binPoints;
-    private String pointsString;
 
     private byte[] pointsToBytes(final double[][] points) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * points.length * points[0].length);
@@ -35,7 +34,6 @@ public class HomeController extends Controller {
             points[i][1] = random.nextDouble() * 0.08 + 37.893394;
         }
         binPoints = pointsToBytes(points);
-        pointsString = Arrays.deepToString(points);
     }
 
     public Result dataPoints(int count) {
@@ -47,7 +45,6 @@ public class HomeController extends Controller {
     }
 
     public Result binDataPoints(int count) {
-        System.out.println(pointsString);
         return ok(Arrays.copyOfRange(binPoints, 0, Math.min(count, points.length) * Double.BYTES * 2));
     }
 }

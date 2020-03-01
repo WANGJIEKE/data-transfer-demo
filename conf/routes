@@ -6,6 +6,7 @@
 GET     /                            controllers.ReactController.index()
 GET     /dataPoints                  controllers.HomeController.dataPoints(count: Int)
 GET     /binDataPoints               controllers.HomeController.binDataPoints(count: Int)
+GET     /ws                          controllers.HomeController.ws()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file                       controllers.ReactController.assetOrDefault(file)

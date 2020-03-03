@@ -62,7 +62,7 @@ public class HomeController extends Controller {
     }
 
     public WebSocket ws() {
-        return WebSocket.Text.accept(
+        return WebSocket.Binary.accept(
                 request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer)
         );
     }

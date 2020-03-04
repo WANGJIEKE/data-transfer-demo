@@ -8,7 +8,7 @@ import websockets
 async def get_points(count: int) -> float:
     uri = "ws://localhost:9000/ws"
     async with websockets.connect(uri) as websocket:
-        await websocket.send(count.to_bytes(4, byteorder='big'))
+        await websocket.send(count.to_bytes(4, byteorder='big'))  # Java int is 4 byte
         t1 = time.time()
         response = await websocket.recv()
         t2 = time.time()

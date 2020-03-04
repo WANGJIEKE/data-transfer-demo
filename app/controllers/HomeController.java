@@ -19,13 +19,13 @@ import javax.inject.Inject;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private double[][] points;
-    private byte[] binPoints;
+    private static double[][] points;
+    private static byte[] binPoints;
 
     private final ActorSystem actorSystem;
     private final Materializer materializer;
 
-    private byte[] pointsToBytes(final double[][] points) {
+    private static byte[] pointsToBytes(final double[][] points) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * points.length * points[0].length);
         for (final double[] point : points) {
             byteBuffer.putDouble(point[0]);
@@ -34,17 +34,19 @@ public class HomeController extends Controller {
         return byteBuffer.array();
     }
 
-    @Inject
-    public HomeController(ActorSystem actorSystem, Materializer materializer) {
-        super();
+    static {
         Random random = new Random();
-        points = new double[1000000][2];
+        points = new double[5000000][2];
         for (int i = 0; i < points.length; ++i) {
             points[i][0] = random.nextDouble() * 0.08 - 122.123801;
             points[i][1] = random.nextDouble() * 0.08 + 37.893394;
         }
         binPoints = pointsToBytes(points);
+    }
 
+    @Inject
+    public HomeController(ActorSystem actorSystem, Materializer materializer) {
+        super();
         this.actorSystem = actorSystem;
         this.materializer = materializer;
     }

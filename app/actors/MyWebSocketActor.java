@@ -14,8 +14,8 @@ public class MyWebSocketActor extends AbstractActor {
 
     static {
         Random random = new Random();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * 2 * 1000000);
-        for (int i = 0; i < 2 * 1000000; i += 2) {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * 2 * 5000000);
+        for (int i = 0; i < 2 * 5000000; i += 2) {
             byteBuffer.putDouble(random.nextDouble() * 0.08 - 122.123801);
             byteBuffer.putDouble(random.nextDouble() * 0.08 + 37.893394);
         }
@@ -33,7 +33,7 @@ public class MyWebSocketActor extends AbstractActor {
     private ByteString getBinPointsByCountMsg(ByteString msg) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(msg.toArray());
         int count = byteBuffer.getInt();
-        byte[] points = Arrays.copyOfRange(binPoints, 0, Math.min(count, 2 * 1000000) * Double.BYTES * 2);
+        byte[] points = Arrays.copyOfRange(binPoints, 0, Math.min(count, 2 * 5000000) * Double.BYTES * 2);
         return new ByteStringBuilder().putBytes(points).result();
     }
 

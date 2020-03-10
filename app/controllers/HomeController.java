@@ -1,11 +1,12 @@
 package controllers;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
-import actors.MyWebSocketActor;
+// import actors.MyWebSocketActor;
 import akka.actor.ActorSystem;
 import akka.stream.Materializer;
 import play.libs.streams.ActorFlow;
@@ -19,29 +20,36 @@ import javax.inject.Inject;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private static double[][] points;
+    // private static double[][] points;
     private static byte[] binPoints;
 
     private final ActorSystem actorSystem;
     private final Materializer materializer;
 
-    private static byte[] pointsToBytes(final double[][] points) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * points.length * points[0].length);
-        for (final double[] point : points) {
-            byteBuffer.putDouble(point[0]);
-            byteBuffer.putDouble(point[1]);
-        }
-        return byteBuffer.array();
-    }
+//    private static byte[] pointsToBytes(final double[][] points) {
+//        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES * points.length * points[0].length);
+//        for (final double[] point : points) {
+//            byteBuffer.putDouble(point[0]);
+//            byteBuffer.putDouble(point[1]);
+//        }
+//        return byteBuffer.array();
+//    }
 
     static {
         Random random = new Random();
-        points = new double[5000000][2];
-        for (int i = 0; i < points.length; ++i) {
-            points[i][0] = random.nextDouble() * 0.08 - 122.123801;
-            points[i][1] = random.nextDouble() * 0.08 + 37.893394;
+//        points = new double[5000000][2];
+//        for (int i = 0; i < points.length; ++i) {
+//            points[i][0] = random.nextDouble() * 0.08 - 122.123801;
+//            points[i][1] = random.nextDouble() * 0.08 + 37.893394;
+//        }
+//        binPoints = pointsToBytes(points);
+        int pointCount = Integer.MAX_VALUE / 8 / Double.BYTES;
+        ByteBuffer buffer = ByteBuffer.allocate(Double.BYTES * 2 * pointCount);
+        for (int i = 0; i < pointCount; ++i) {
+            buffer.putDouble(random.nextDouble() * 0.08 - 122.123801);
+            buffer.putDouble(random.nextDouble() * 0.08 + 37.893394);
         }
-        binPoints = pointsToBytes(points);
+        binPoints = buffer.array();
     }
 
     @Inject
@@ -51,21 +59,21 @@ public class HomeController extends Controller {
         this.materializer = materializer;
     }
 
-    public Result dataPoints(int count) {
-        return ok(Json.toJson(new HashMap<String, Object>(){
-            {
-                put("latlons", Arrays.copyOfRange(points, 0, Math.min(count, points.length)));
-            }
-        }));
-    }
+//    public Result dataPoints(int count) {
+//        return ok(Json.toJson(new HashMap<String, Object>(){
+//            {
+//                put("latlons", Arrays.copyOfRange(points, 0, Math.min(count, points.length)));
+//            }
+//        }));
+//    }
 
     public Result binDataPoints(int count) {
-        return ok(Arrays.copyOfRange(binPoints, 0, Math.min(count, points.length) * Double.BYTES * 2));
+         return ok(Arrays.copyOfRange(binPoints, 0, Math.min(count, binPoints.length) * Double.BYTES * 2));
     }
 
-    public WebSocket ws() {
-        return WebSocket.Binary.accept(
-                request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer)
-        );
-    }
+//    public WebSocket ws() {
+//        return WebSocket.Binary.accept(
+//                request -> ActorFlow.actorRef(MyWebSocketActor::props, actorSystem, materializer)
+//        );
+//    }
 }
